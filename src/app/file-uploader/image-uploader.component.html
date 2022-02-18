@@ -6,4 +6,4 @@
     <input class="form-control" type="file" id="formFile" accept="image/*" (change)="onChange($event)">
 </div>
 
-<img *ngIf="url" [src]="url" class="img-fluid" alt={{errorMessage}}>
+<img *ngIf="url" [src]="url" class="img-fluid image-preview" alt={{errorMessage}}>
