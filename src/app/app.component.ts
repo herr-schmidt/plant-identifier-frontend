@@ -7,10 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  file: File | null = null;
+  image: File | null = null;
 
-  addFile(newFile: File) {
-    this.file = newFile;
-    console.log(this.file.text());
+  addImage(newImage: File) {
+    this.image = newImage;
   }
 }

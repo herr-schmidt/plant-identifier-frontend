@@ -3,6 +3,7 @@
 
 <div class="mb-3">
     <label *ngIf="hasLabel()" for="formFile" class="form-label">{{label}}</label>
-    <input class="form-control" type="file" id="formFile" (change)="addFile($event)">
-    <!--button type="button" (click)="addFile(file)">Upload</button-->
+    <input class="form-control" type="file" id="formFile" accept="image/*" (change)="onChange($event)">
 </div>
+
+<img *ngIf="url" [src]="url" class="img-fluid" alt={{errorMessage}}>
