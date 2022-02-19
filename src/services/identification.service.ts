@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 export class IdentificationService {
     constructor(private http: HttpClient) { }
 
-    public identifyPlant(plantId: number) {
-        const url = "http://localhost:8080/identify";
-        return this.http.get<string>(url);
+    public identifyPlant(plantImage: File) {
+        const url = "http://localhost:8080/identify"
+        return this.http.post(url, plantImage, { responseType: "blob" });
     }
 }

@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Utils } from 'src/utils/utils';
+import { Image } from 'src/model/model';
 
 @Component({
   selector: 'image-uploader',
@@ -10,8 +12,11 @@ export class ImageUploader {
   @Input() label: string = "";
   @Output() image = new EventEmitter<File>();
 
-  imageToUpload: File | null = null;
-  url: any;
+  imageToUpload: Image = {
+    imageFile: null,
+    imageURL: null
+  }
+
   errorMessage = "Errore durante il caricamento: sono ammesse solo immagini";
 
   public onChange(e: Event) {
@@ -20,19 +25,15 @@ export class ImageUploader {
       return;
     }
 
-    this.imageToUpload = files[0];
+    this.imageToUpload.imageFile = files[0];
 
-    const reader = new FileReader();
-    reader.readAsDataURL(this.imageToUpload);
-    reader.onload = (_event) => {
-      this.url = reader.result;
-    }
+    Utils.setImageUrl(this.imageToUpload);
 
     if (!this.containsImage()) {
       return;
     }
 
-    this.image.emit(this.imageToUpload);
+    this.image.emit(this.imageToUpload.imageFile);
   }
 
   public hasLabel() {
@@ -40,6 +41,6 @@ export class ImageUploader {
   }
 
   private containsImage() {
-    return this.imageToUpload && this.imageToUpload['type'].split('/')[0] === 'image';
+    return this.imageToUpload.imageFile && this.imageToUpload.imageFile['type'].split('/')[0] === 'image';
   }
 }

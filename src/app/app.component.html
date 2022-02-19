@@ -6,8 +6,6 @@
   <button type="button" class="btn btn-primary" (click)="identifyPlant()">Upload</button>
 </div>
 
-<div>
-  <h2 >
-      
-  </h2>
+<div class="result-form">
+  <img *ngIf="guessedImage.imageURL" [src]="guessedImage.imageURL" class="img-fluid image-preview" alt='error'>
 </div>

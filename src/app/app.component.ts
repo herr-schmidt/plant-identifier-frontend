@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IdentificationService } from 'src/services/identification.service';
+import { Utils } from 'src/utils/utils';
+import { Image } from 'src/model/model';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +10,40 @@ import { IdentificationService } from 'src/services/identification.service';
 })
 export class AppComponent {
 
-  image: File | null = null;
-  imageClassification: string;
+  uploadedImage: Image = {
+    imageFile: null,
+    imageURL: null
+  };
+
+  guessedImage: Image = {
+    imageFile: null,
+    imageURL: null
+  };
 
   constructor(private identificationService: IdentificationService) {
-    this.imageClassification = "None";
   }
 
-  public addImage(newImage: File) {
-    this.image = newImage;
+  public addImage(newImageFile: File) {
+    this.uploadedImage.imageFile = newImageFile;
   }
 
   public identifyPlant() {
-    this.identificationService.identifyPlant(1)
-      .subscribe(response => this.imageClassification = response);
+    if (!this.uploadedImage.imageFile) {
+      return;
+    }
+    this.identificationService.identifyPlant(this.uploadedImage.imageFile)
+      .subscribe(response => {
+        this.guessedImage.imageURL = undefined;
+
+        var blob: any = response;
+        // A Blob misses the following attributes in order to be a File
+        blob.lastModifiedDate = new Date();
+        blob.name = "guess.jpg";
+
+        this.guessedImage.imageFile = <File>blob;
+
+        Utils.setImageUrl(this.guessedImage);
+      }
+      );
   }
 }
