@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IdentificationService } from 'src/services/identification.service';
-import { Utils } from 'src/utils/utils';
 import { Classification, Image } from 'src/model/model';
 
 @Component({
@@ -19,8 +18,6 @@ export class AppComponent {
     species: "",
     confidence: 0.0
   }
-
-
 
   private translations: Map<string, string> =
     new Map([
@@ -47,7 +44,6 @@ export class AppComponent {
       .subscribe(response => {
         this.classification = { ...response };
         this.classification.species = this.translations.get(this.classification.species)!;
-        console.log(response);
       }
       );
   }
