@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IdentificationService } from 'src/services/identification.service';
 import { Utils } from 'src/utils/utils';
-import { Image } from 'src/model/model';
+import { Classification, Image } from 'src/model/model';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +15,22 @@ export class AppComponent {
     imageURL: null
   };
 
-  guessedImage: Image = {
-    imageFile: null,
-    imageURL: null
-  };
+  classification: Classification = {
+    species: "",
+    confidence: 0.0
+  }
+
+
+
+  private translations: Map<string, string> =
+    new Map([
+      ["daisy", "Margherita"],
+      ["dandelion", "Tarassaco"],
+      ["roses", "Rosa"],
+      ["sunflowers", "Girasole"],
+      ["tulips", "Tulipano"],
+    ]);
+
 
   constructor(private identificationService: IdentificationService) {
   }
@@ -33,16 +45,9 @@ export class AppComponent {
     }
     this.identificationService.identifyPlant(this.uploadedImage.imageFile)
       .subscribe(response => {
-        this.guessedImage.imageURL = undefined;
-
-        var blob: any = response;
-        // A Blob misses the following attributes in order to be a File
-        blob.lastModifiedDate = new Date();
-        blob.name = "guess.jpg";
-
-        this.guessedImage.imageFile = <File>blob;
-
-        Utils.setImageUrl(this.guessedImage);
+        this.classification = { ...response };
+        this.classification.species = this.translations.get(this.classification.species)!;
+        console.log(response);
       }
       );
   }

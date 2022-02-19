@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Classification } from 'src/model/model';
 
 @Injectable()
 export class IdentificationService {
@@ -7,6 +8,6 @@ export class IdentificationService {
 
     public identifyPlant(plantImage: File) {
         const url = "http://localhost:8080/identify"
-        return this.http.post(url, plantImage, { responseType: "blob" });
+        return this.http.post<Classification>(url, plantImage);
     }
 }

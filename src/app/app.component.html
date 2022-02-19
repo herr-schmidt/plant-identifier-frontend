@@ -7,5 +7,7 @@
 </div>
 
 <div class="result-form">
-  <img *ngIf="guessedImage.imageURL" [src]="guessedImage.imageURL" class="img-fluid image-preview" alt='error'>
+  <h5 *ngIf="classification.species">
+    {{classification.species}}, likelyhood: {{classification.confidence}}
+  </h5>
 </div>
